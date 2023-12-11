@@ -21,7 +21,7 @@ struct ContentView: View {
             }, label: {
                 Text("Go")
                     .padding(.horizontal)
-                    .background(.red)
+                    .background(.green)
             })
         }
         .padding()
