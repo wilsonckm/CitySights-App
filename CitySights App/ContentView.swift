@@ -11,6 +11,8 @@ struct ContentView: View {
     
     @State var businesses = [Business]()
     @State var query: String = ""
+    @State var selectedBusiness: Business?
+    
     var service = DataService()
     
     var body: some View {
@@ -19,7 +21,6 @@ struct ContentView: View {
                 TextField("What are you looking for?", text: $query)
                     .textFieldStyle(.roundedBorder)
                 Button(action: {
-                    
                     //To do: Implement query
                 }, label: {
                     Text("Go")
@@ -47,6 +48,9 @@ struct ContentView: View {
                         }
                         Divider()
                     }
+                    .onTapGesture {
+                        selectedBusiness = b
+                    }
                 }
                 .listRowSeparator(.hidden)
             }
@@ -55,6 +59,9 @@ struct ContentView: View {
         .padding()
         .task {
             businesses = await service.businessSearch()
+        }
+        .sheet(item: $selectedBusiness) { item in
+            BusinessDetailView(business: item)
         }
     }
 }
