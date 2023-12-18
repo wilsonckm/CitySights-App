@@ -28,6 +28,7 @@ struct ContentView: View {
                         .background(.pink)
                 })
             }
+            
             List {
                 ForEach(businesses) { b in
                     VStack (spacing: 20) {
