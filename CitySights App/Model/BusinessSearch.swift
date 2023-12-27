@@ -20,5 +20,5 @@ struct Region: Decodable {
 
 struct Coordinate: Decodable {
     var latitude: Double?
-    var longitutde: Double?
+    var longitude: Double?
 }
