@@ -22,7 +22,8 @@ struct MapView: View {
         }
         .onChange(of: selectedBusinessId) { oldValue, newValue in
             //Find business which matches this id
-            let business = model.businesses.first {business in business.id == selectedBusinessId}
+            let business = model.businesses.first {business in business.id == selectedBusinessId
+            }
             if business != nil {
                 model.selectedBusiness = business!
             }
