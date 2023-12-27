@@ -54,8 +54,7 @@ struct BusinessDetailView: View {
                     Image("regular_\(business?.rating ?? 0)")
                         .padding(.bottom, 16)
                     
-                    
-                    
+                                        
                     Divider()
                     
                     HStack {
