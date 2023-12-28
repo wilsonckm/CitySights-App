@@ -42,15 +42,13 @@ class BusinessModel: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    
-    
-    
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        //Error handling
         print(error)
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        //Detect if user alloed, then request location
+        //Detect if user allowed, then request location
         if manager.authorizationStatus == .authorizedWhenInUse {
             currentUserLocation = nil
             manager.requestLocation()
