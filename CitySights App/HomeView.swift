@@ -45,7 +45,7 @@ struct HomeView: View {
             }
         }
         .onAppear(perform: {
-            model.getBusinsses()
+            model.getBusinesses()
         })
         
         .padding()
