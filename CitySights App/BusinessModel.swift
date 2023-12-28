@@ -26,7 +26,7 @@ class BusinessModel: NSObject, CLLocationManagerDelegate {
         locationManager.delegate = self
     }
     
-    func getBusinsses() {
+    func getBusinesses() {
         Task {
             businesses = await service.businessSearch(userLocation: currentUserLocation)
         }
@@ -60,7 +60,7 @@ class BusinessModel: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if currentUserLocation == nil {
             currentUserLocation = locations.last?.coordinate
-            getBusinsses()
+            getBusinesses()
         }
         
         manager.stopUpdatingLocation()
