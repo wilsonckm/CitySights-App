@@ -11,25 +11,66 @@ struct HomeView: View {
     
     @Environment(BusinessModel.self) var model
     @State var selectedTab = 0
+    @State var popularOn = false
+    @State var dealsOn = false
+    @State var categorySelection = "restaurants"
+    @State var query = ""
+    @FocusState var queryBoxFocused: Bool
+    @State var showOptions = false
     
     var body: some View {
         @Bindable var model = model
         
         VStack {
             HStack {
-                TextField("What are you looking for?", text: $model.query)
+                TextField("What are you looking for?", text: $query)
                     .textFieldStyle(.roundedBorder)
+                    .focused($queryBoxFocused)
+                    .onTapGesture {
+                        withAnimation{
+                            showOptions = true
+                        }
+                    }
                 Button(action: {
-                    //To do: Implement query
+                    //Perform search
+                    withAnimation {
+                        showOptions = false
+                        queryBoxFocused = false
+                    }
+                    model.getBusinesses(query: query, options: getOptionsString(), category: categorySelection)
                 }, label: {
                     Text("Go")
                         .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
+                        .frame(height: 32)
                         .background(.blue)
                         .foregroundColor(.white)
-                        .cornerRadius(10)
+                        .cornerRadius(6)
                 })
             }
+            .padding(.horizontal)
+            
+            //Query options
+            if showOptions {
+                VStack {
+                                Toggle("Popular", isOn: $popularOn)
+                                Toggle("Deals", isOn: $dealsOn)
+                                
+                                HStack {
+                                    Text("Category")
+                                    Spacer()
+                                    Picker("Category", selection: $categorySelection) {
+                                        Text("Restaurants")
+                                            .tag("restaurants")
+                                        Text("Arts")
+                                            .tag("arts")
+                                    }
+                                }
+                            }
+                .padding(.horizontal, 40)
+
+            }
+            
+                    
             Picker("", selection: $selectedTab) {
                 Text("List")
                     .tag(0)
@@ -40,18 +81,41 @@ struct HomeView: View {
             
             if selectedTab == 1 {
                 MapView()
+                    .onTapGesture {
+                        withAnimation {
+                            queryBoxFocused = false
+                            showOptions = false
+                        }
+                    }
             } else {
                 ListView()
+                    .onTapGesture {
+                        withAnimation {
+                            queryBoxFocused = false
+                            showOptions = false
+                        }
+                    }
             }
         }
         .onAppear(perform: {
-            model.getBusinesses()
+            model.getBusinesses(query: nil, options: nil, category: nil)
         })
         
         .padding()
         .sheet(item: $model.selectedBusiness) { item in
             BusinessDetailView()
         }
+    }
+    
+    func getOptionsString() -> String {
+        var optionsArray = [String]()
+        if popularOn {
+            optionsArray.append("hot_and_new")
+        }
+        if dealsOn {
+            optionsArray.append("deals")
+        }
+        return optionsArray.joined(separator: ",")
     }
 }
 
